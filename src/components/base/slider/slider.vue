@@ -153,8 +153,6 @@
 					stopPropagation: true,
 					click: this.click
 				});
-
-
 				this.slider.on("scrollEnd", this._onScrollEnd);
 				this.slider.on("touchEnd", () => {
 					if (this.autoPlay) {
@@ -196,7 +194,6 @@
 			},
 			threshold() {
 				this.update();
-				
 			}
 		}
 	};
