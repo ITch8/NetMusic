@@ -30,7 +30,7 @@
       height: 32px
       margin-right: 9px
       bg-image('logo')
-      background-size: 30px 32px
+      background-size: 110px 32px
     .text
       display: inline-block
       vertical-align: top
