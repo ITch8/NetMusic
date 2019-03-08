@@ -1,4 +1,4 @@
-# netMusic
+# Net Music
 
 # 模仿QQ音乐wap端 仅为学习
 
