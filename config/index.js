@@ -6,14 +6,25 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+		'/api/getSingers':{
+			target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
+			changeOrigin: true,
+			bypass:function(req,res,proxyOptions){
+				req.headers.referer='https://u.y.qq.com'
+				req.headers.host='u.y.qq.com'
+			},
+			pathRewrite:{
+				'^/api/getSingers':''
+			}
+		}
+	},
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.0.161', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

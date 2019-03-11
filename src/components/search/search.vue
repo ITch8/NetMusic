@@ -28,7 +28,7 @@
 
 <script type="text/ecmascript-6">
 	
-	import {getHotkey} from 'api/recommendAPI.js'
+	import {getHotkey} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
 	
 	export default{

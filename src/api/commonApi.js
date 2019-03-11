@@ -1,7 +1,7 @@
 import jsonp from 'common/js/jsonp.js'
 import {commonParams,options} from './config'
 
-export function getRecommend(){//获取数据
+export function getRecommend(){//获取推荐歌曲数据
 	
 	const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg' //推荐歌曲请求接口
 	

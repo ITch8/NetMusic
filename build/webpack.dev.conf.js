@@ -26,22 +26,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-		before(apiRoutes){
-			apiRoutes.get('/api/getDiscList',(req,res)=>{
-				const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-				axios.get(url,{
-					header:{
-						referer:'https://c.y.qq.com/',
-						host:'c.y.qq.com'
-					},
-					params:req.query
-				}).then((response)=>{
-					res.json(response.data)//api返回的数据在data里面
-				}).catch((e)=>{
-					console.log(e)
-				})
-			})
-		},
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [

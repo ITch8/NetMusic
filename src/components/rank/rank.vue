@@ -29,7 +29,7 @@
 
 <script type="text/ecmascript-6">
 	
-	import {getTopList} from 'api/recommendAPI.js'
+	import {getTopList} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
 	import MeScroll from 'mescroll.js'
 	import 'mescroll.js/mescroll.min.css'
