@@ -20,6 +20,17 @@ module.exports = {
 			pathRewrite:{
 				'^/api/getSingers':''
 			}
+		},
+		'/api/getSingerDetail':{
+			target:'https://c.y.qq.com/mv/fcgi-bin/fcg_singer_mv.fcg',
+			changeOrigin:true,
+			bypass:function(req,res,proxyOptions){
+				req.headers.referer='https://u.y.qq.com'
+				req.headers.host='u.y.qq.com'
+			},
+			pathRewrite:{
+				'^/api/getSingerDetail':''
+			}
 		}
 	},
 

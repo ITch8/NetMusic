@@ -1,7 +1,7 @@
 <template>
 	<div class="s_singers">
 		<ul>
-			<li class="s_singers_item" v-for="(item,index) in singers" :key="index">
+			<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click.native="detail(item)">
 				<div class="s_main">
 					<a href="javascript:;" class="s_pic">
 						<img v-lazy="item.singer_pic" />

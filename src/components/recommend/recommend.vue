@@ -100,31 +100,31 @@
 			}
 		},
 		 // 进入路由时,恢复列表状态
-	  beforeRouteEnter (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteEnter不用写
-		next(vm => {
-		  if (vm.mescroll) {
-			// 恢复到之前设置的isBounce状态
-			if (vm.mescroll.lastBounce != null) vm.mescroll.setBounce(vm.mescroll.lastBounce)
-			// 滚动到之前列表的位置 (注意:路由使用keep-alive才生效)
-			if (vm.mescroll.lastScrollTop) {
-			  vm.mescroll.setScrollTop(vm.mescroll.lastScrollTop)
-			  setTimeout(() => { // 需延时,因为setScrollTop内部会触发onScroll,可能会渐显回到顶部按钮
-				vm.mescroll.setTopBtnFadeDuration(0)// 设置回到顶部按钮显示时无渐显动画
-			  }, 16)
+		  beforeRouteEnter (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteEnter不用写
+			next(vm => {
+			  if (vm.mescroll) {
+				// 恢复到之前设置的isBounce状态
+				if (vm.mescroll.lastBounce != null) vm.mescroll.setBounce(vm.mescroll.lastBounce)
+				// 滚动到之前列表的位置 (注意:路由使用keep-alive才生效)
+				if (vm.mescroll.lastScrollTop) {
+				  vm.mescroll.setScrollTop(vm.mescroll.lastScrollTop)
+				  setTimeout(() => { // 需延时,因为setScrollTop内部会触发onScroll,可能会渐显回到顶部按钮
+					vm.mescroll.setTopBtnFadeDuration(0)// 设置回到顶部按钮显示时无渐显动画
+				  }, 16)
+				}
+			  }
+			})
+		  },
+		  // 离开路由时,记录列表状态
+		  beforeRouteLeave (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteLeave不用写
+			if (this.mescroll) {
+			  this.mescroll.lastBounce = this.mescroll.optUp.isBounce// 记录当前是否禁止ios回弹
+			  this.mescroll.setBounce(true) // 允许bounce
+			  this.mescroll.lastScrollTop = this.mescroll.getScrollTop()// 记录当前滚动条的位置
+			  this.mescroll.hideTopBtn(0)// 隐藏回到顶部按钮,无渐隐动画
 			}
-		  }
-		})
-	  },
-	  // 离开路由时,记录列表状态
-	  beforeRouteLeave (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteLeave不用写
-		if (this.mescroll) {
-		  this.mescroll.lastBounce = this.mescroll.optUp.isBounce// 记录当前是否禁止ios回弹
-		  this.mescroll.setBounce(true) // 允许bounce
-		  this.mescroll.lastScrollTop = this.mescroll.getScrollTop()// 记录当前滚动条的位置
-		  this.mescroll.hideTopBtn(0)// 隐藏回到顶部按钮,无渐隐动画
-		}
-		next()
-	  },
+			next()
+		  },
 		components:{
 			Slider
 		},
