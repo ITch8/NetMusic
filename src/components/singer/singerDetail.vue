@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="content">
 		<scroll ref="scroll" class="scroll" :data="songs">
 			<song-list :data="songs"></song-list>
 		</scroll>
@@ -34,7 +34,7 @@
 				if(list && list.length > 0){
 					for(var i = 0 ; i < list.length; i++){
 						console.log(list[i].id)
-						arr.push(new Song(list[i].id,list[i].name,list[i].title,list[i].singer[0].name,list[i].url))
+						arr.push(new Song(list[i].id,list[i].name,list[i].album.title,list[i].singer[0].name,list[i].url))
 					}
 				}
 				this.songs = arr || []

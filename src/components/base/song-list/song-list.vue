@@ -37,7 +37,6 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	@import "~common/stylus/variable"
-	
 	.count_box
 		position: relative
 		display: -webkit-box
@@ -45,7 +44,8 @@
 		height: 54px
 		margin: 0 16px -10px
 		.count_box__desc
-			font-size:14px
+			font-size:13px
+			color:#777
 			.count_box__number
 				margin-left:5px
 	.qui_list
@@ -67,14 +67,22 @@
 					.qui_list__tit
 						font-size:16px
 						color:#000
-						.qui_list__txt
-							display:block
-							max-width:100%
-							overflow:hidden
-							white-space:nowrap
-							text-overflow:ellipsis
+					.qui_list__txt
+						display:block
+						max-width:100%
+						overflow:hidden
+						white-space:nowrap
+						text-overflow:ellipsis
 					.qui_list__desc, .qui_list__tit
 						display:-webkit-box
 						-webkit-box-align:center
 						overflow:hidden
+					.qui_list__tit
+						.qui_list__txt
+							color:#000
+					.qui_list__desc
+						.qui_list__txt
+							color:#777
+							font-size:13px
+							margin:8px 0 0
 </style>

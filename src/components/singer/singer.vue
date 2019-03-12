@@ -1,23 +1,26 @@
 <template>
 	<div class="s_singers">
-		<ul>
-			<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click.native="detail(item)">
-				<div class="s_main">
-					<a href="javascript:;" class="s_pic">
-						<img v-lazy="item.singer_pic" />
-					</a>
-					<div class="s_info">
-						{{item.singer_name}} ({{item.country}})
+		<scroll ref="scroll" class="scroll" :data="singers">
+			<ul>
+				<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click="detail">
+					<div class="s_main">
+						<a href="javascript:;" class="s_pic">
+							<img v-lazy="item.singer_pic" />
+						</a>
+						<div class="s_info">
+							{{item.singer_name}} ({{item.country}})
+						</div>
 					</div>
-				</div>
-			</li>
-		</ul>
+				</li>
+			</ul>
+		</scroll>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
 	import {getSingerList} from 'api/singer.js'
 	import {RES_OK} from 'api/config.js'
+	import Scroll from 'components/base/scroll/scroll'
 	import Vue from 'vue'
 	import VueLazyload  from 'vue-lazyload'
 	
@@ -43,7 +46,14 @@
 					this.singers = res.singerList.data.singerlist
 					console.log(this.singers.length)
 				})
+			},
+			detail(){
+				console.log(11)
+				this.$router.push({path:'singer_detaile'})
 			}
+		},
+		components:{
+			Scroll
 		}
 	}
 	
@@ -51,10 +61,14 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	@import "~common/stylus/variable"
-	
 	.s_singers
 		margin:10px
 		padding:0 15px
+		.scroll
+			position: fixed
+			width:100% 
+			height:100%
+			top: 88px
 		li
 			margin: 15px 0
 			overflow:hidden
