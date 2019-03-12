@@ -31,6 +31,17 @@ module.exports = {
 			pathRewrite:{
 				'^/api/getSingerDetail':''
 			}
+		},
+		'/api/getSingerTrack':{
+			target:'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
+			changeOrigin:true,
+			bypass:function(req,res,proxyOptions){
+				req.headers.referer='https://c.y.qq.com'
+				req.headers.host='c.y.qq.com'
+			},
+			pathRewrite:{
+				'^/api/getSingerTrack':''
+			}
 		}
 	},
 

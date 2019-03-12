@@ -6,7 +6,7 @@ import Rank from 'components/rank/rank'
 import Search from 'components/search/search'
 import Singer from 'components/singer/singer'
 import SingerDetail from 'components/singer/singerDetail'
-import Sing from 'components/sing/sing'
+import Song from 'components/song/song'
 
 Vue.use(Router)
 
@@ -37,8 +37,8 @@ export default new Router({
 			component:SingerDetail
 		},
 		{
-			path:'/sing',
-			component:Sing
+			path:'/song',
+			component:Song
 		}
   ]
 })

@@ -3,8 +3,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {getSings} from 'api/sing.js'
-		
+	import {getSings} from 'api/song.js'
 		
 		export default{
 			data(){

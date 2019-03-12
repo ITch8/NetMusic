@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div ref="mescroll" class="mescroll">
+		<scroll ref="scroll" class="scroll" :data="topList">
 			<div class="mod_topic">
 				<ul>
 					<li class="topic_item" v-for="(item,index) in topList" :key="index">
@@ -23,33 +23,24 @@
 					</li>
 				</ul>
 			</div>
-		</div>
+		</scroll>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
 	
 	import {getTopList} from 'api/commonApi.js'
+	import Scroll from 'components/base/scroll/scroll'
 	import {RES_OK} from 'api/config.js'
-	import MeScroll from 'mescroll.js'
-	import 'mescroll.js/mescroll.min.css'
 	
 	export default{
 		data(){
 			return {
-				topList:[],
-				mescroll:null
+				topList:[]
 			}
 		},
 		mounted() {
-			this.mescroll = new MeScroll(this.$refs.mescroll, {
-			    down: {
-			        callback: this._getTopList
-				},
-				up:{
-					use:false
-				}
-			})
+			this._getTopList()
 		},
 		methods:{
 			_getTopList(){
@@ -57,49 +48,18 @@
 					if(res.code  == RES_OK){
 						console.log(res.data.topList);
 						this.topList = res.data.topList
-						//数据渲染成功后,隐藏下拉刷新的状态
-						this.$nextTick(() => {
-						  this.mescroll.endSuccess(res.data.topList.length);
-						})
-					}else{
-						this.mescroll.endErr();
 					}
 				}).catch((e)=>{
-					//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
-			        this.mescroll.endErr();
 				})
 			}
-		},
-		// 进入路由时,恢复列表状态
-		beforeRouteEnter (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteEnter不用写
-				next(vm => {
-				  if (vm.mescroll) {
-					// 恢复到之前设置的isBounce状态
-					if (vm.mescroll.lastBounce != null) vm.mescroll.setBounce(vm.mescroll.lastBounce)
-					// 滚动到之前列表的位置 (注意:路由使用keep-alive才生效)
-					if (vm.mescroll.lastScrollTop) {
-					  vm.mescroll.setScrollTop(vm.mescroll.lastScrollTop)
-					  setTimeout(() => { // 需延时,因为setScrollTop内部会触发onScroll,可能会渐显回到顶部按钮
-						vm.mescroll.setTopBtnFadeDuration(0)// 设置回到顶部按钮显示时无渐显动画
-					  }, 16)
-					}
-				  }
-				})
-		},
-		// 离开路由时,记录列表状态
-		beforeRouteLeave (to, from, next) {  // 如果没有配置回到顶部按钮或isBounce,则beforeRouteLeave不用写
-				if (this.mescroll) {
-				  this.mescroll.lastBounce = this.mescroll.optUp.isBounce// 记录当前是否禁止ios回弹
-				  this.mescroll.setBounce(true) // 允许bounce
-				  this.mescroll.lastScrollTop = this.mescroll.getScrollTop()// 记录当前滚动条的位置
-				  this.mescroll.hideTopBtn(0)// 隐藏回到顶部按钮,无渐隐动画
-				}
-				next()
 		},
 		filters:{
 			favirate(num){
 				return Math.ceil(Number(num || 0)/10000)
 			}
+		},
+		components:{
+			Scroll
 		}
 	}
 	
@@ -108,7 +68,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	@import "~common/stylus/variable"
 	
-	.mescroll
+	.scroll
 		position: fixed
 		width:100% 
 		height:100%

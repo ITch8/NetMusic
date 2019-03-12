@@ -23,8 +23,8 @@
 	
 	Vue.use(VueLazyload,{
 		preLoad:1.3,
-		error:'common/image/person_default.png',
-		loading:'common/image/person_default.png',
+		error:require('common/image/person_default.png'),
+		loading:require('common/image/person_default.png'),
 		attempt:1
 	})
 	
