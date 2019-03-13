@@ -6,7 +6,7 @@
 			</div>
 		</div>
 		<ul class="qui_list">
-			<li class="js_play_song qui_list__item" v-for="(item,index) in data" :key="index">
+			<li class="js_play_song qui_list__item" v-for="(item,index) in data" :key="index" @click="_clickItem(item,index)">
 				<div class="qui_list__bd">
 					<div class="qui_list__box">
 						<h3 class="qui_list__tit"><span class="qui_list__txt">{{item.name}}</span></h3>
@@ -19,6 +19,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+	import {mapActions} from 'vuex'
+	
 	export default {
 		name:'song-list',
 		props:{
@@ -29,9 +31,19 @@
 		},
 		methods:{
 			_clickItem(item,index){
-				
-			}
-		}
+				this.selectPlay({
+					list:this.data,
+					index:index
+				})
+				//this.$router.push({path:'/player',query:{musicid:item.id}})
+			},
+			...mapActions([
+				'selectPlay'
+			])
+		},
+		computed: {
+			
+		},
 	}
 </script>
 

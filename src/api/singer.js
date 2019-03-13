@@ -35,3 +35,17 @@ export function getSingerDetail() {
 		data:res.req_0.data.tracks
 	}
 }
+
+// 获取歌曲单词  https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_yqq.fcg
+// nobase64: 1
+// musicid: 107192078
+// -: jsonp1
+// g_tk: 5381
+// loginUin: 0
+// hostUin: 0
+// format: json
+// inCharset: utf8
+// outCharset: utf-8
+// notice: 0
+// platform: yqq.json
+// needNewCode: 0

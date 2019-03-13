@@ -49,7 +49,7 @@
 			},
 			detail(){
 				console.log(11)
-				this.$router.push({path:'singer_detaile'})
+				this.$router.push({path:'singer_detail'})
 			}
 		},
 		components:{

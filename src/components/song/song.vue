@@ -3,7 +3,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {getSings} from 'api/song.js'
 		
 		export default{
 			data(){
@@ -12,13 +11,9 @@
 				}
 			},
 			mounted() {
-				this._getSings()
 			},
 			methods:{
 				_getSings(){
-					getSings().then(res=>{
-						console.log(res)
-					})
 				}
 			}
 		}
