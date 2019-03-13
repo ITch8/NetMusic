@@ -43,15 +43,15 @@
 			</div>
 		</transition >
 		<transition name="mini">
-		  <div class="mini-player" v-show="!fullScreen">
-			<div class="icon" @click="convertToNormal">
+		  <div class="mini-player" v-show="!fullScreen" @click="convertToNormal">
+			<div class="icon" >
 			  <img :class="cdCls" width="40" height="40" :src="currentSong.image">
 			</div>
-			<div class="text" @click="convertToNormal">
+			<div class="text">
 			  <h2 class="name" v-html="currentSong.name"></h2>
 			  <p class="desc" v-html="currentSong.singer_name"></p>
 			</div>
-			<div class="control" @click="play">
+			<div class="control" @click.stop="play">
 				<i :class="miniPlayCls"></i>
 			</div>
 			<div class="control">
@@ -90,7 +90,7 @@
 				return this.playing ? 'icon-pause' : 'icon-play'
 			},
 			cdCls(){
-				return this.playing ? 'cd play' : 'cd pause'
+				return this.playing ? 'cd play' : 'cd play pause'
 			},
 			miniPlayCls(){
 				return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
@@ -334,7 +334,7 @@
       z-index: 180
       width: 100%
       height: 60px
-      background: $color-highlight-background
+      background: $color-theme
       &.mini-enter-active, &.mini-leave-active
         transition: all 0.4s
       &.mini-enter, &.mini-leave-to
@@ -364,14 +364,14 @@
         .desc
           no-wrap()
           font-size: $font-size-small
-          color: $color-text-d
+          color: $color-text
       .control
         flex: 0 0 30px
         width: 30px
         padding: 0 10px
         .icon-play-mini, .icon-pause-mini, .icon-playlist
           font-size: 30px
-          color: $color-theme-d
+          color: $color-text
         .icon-mini
           font-size: 32px
           position: absolute
