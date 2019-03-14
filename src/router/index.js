@@ -8,6 +8,7 @@ import Singer from 'components/singer/singer'
 import SingerDetail from 'components/singer/singerDetail'
 import Song from 'components/song/song'
 import Player from 'components/player/player'
+import Radio from 'components/recommend/radio'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
 			path:'/player',
 			name:'player',
 			component:Player
+		},
+		{
+			path:'/radio',
+			name:'radio',
+			component:Radio
 		}
   ]
 })

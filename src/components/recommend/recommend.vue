@@ -1,6 +1,6 @@
 <template>
 	<div class="recommend" ref="recommend">
-		<div ref="scroll" class="recommend-content">
+		<div class="recommend-content">
 			<div v-if="recommends.length" class="slider-wrapper">
 				<slider>
 					<div v-for="(item,index) in recommends" :key="index">
@@ -27,7 +27,7 @@
 				</ul>
 				<h1 class="list-title .mod_twocol_list">热门歌单</h1>
 				<ul class="list_container">
-					<li v-for="(item,index) in songList" :key="index">
+					<li v-for="(item,index) in songList" :key="index" @click="toRadio(item)">
 						<a class="list_main" href="javascript:">
 							<div class="list_media">
 								<img class="video_list__media_img"  :src="item.picUrl" alt="item.Ftitle"/>
@@ -50,6 +50,7 @@
 
 <script type="text/ecmascript-6">
 	import Slider from 'components/base/slider/slider'
+	import Scroll from 'components/base/scroll/scroll'
 	import {getRecommend} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
 	
@@ -68,7 +69,7 @@
 			_getRecommend(){
 				getRecommend().then((res)=>{
 					if(res.code  == RES_OK){
-						console.log(res.data.slider);
+						console.log(JSON.stringify(res.data));
 						this.recommends = res.data.slider
 						this.radioList = res.data.radioList
 						this.songList = res.data.songList
@@ -76,10 +77,17 @@
 					}
 				}).catch((e)=>{
 				})
+			},
+			toRadio(item){
+				let id  = item.id
+				console.log(id)
+				this.$router.push({path:'/radio',query:{disstid:item.id}})
 			}
 		},
 		components:{
-			Slider		},
+			Slider,
+			Scroll
+		},
 		filters:{
 			favirate(num){
 				return Math.ceil(Number(num || 0)/10000)
@@ -97,6 +105,8 @@
     width: 100%
     top: 88px
     bottom: 0
+    height:100%
+    overflow:scroll
 	.recommend-content
 		overflow: hidden
 		padding-bottom:80px
