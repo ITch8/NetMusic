@@ -2,7 +2,7 @@
 	<div class="s_singers">
 		<scroll ref="scroll" class="scroll" :data="singers">
 			<ul>
-				<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click="detail">
+				<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click="detail(item)">
 					<div class="s_main">
 						<a href="javascript:;" class="s_pic">
 							<img v-lazy="item.singer_pic" />
@@ -44,12 +44,11 @@
 			_getSingers(){
 				getSingerList().then((res)=>{
 					this.singers = res.singerList.data.singerlist
-					console.log(this.singers.length)
+					console.log(JSON.stringify(this.singers[0]))
 				})
 			},
-			detail(){
-				console.log(11)
-				this.$router.push({path:'singer_detail'})
+			detail(item){
+				this.$router.push({path:'/singer_detail',query:{singermid:item.singer_mid,singer_pic:item.singer_pic}})
 			}
 		},
 		components:{

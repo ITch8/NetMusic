@@ -22,11 +22,11 @@ module.exports = {
 			}
 		},
 		'/api/getSingerDetail':{
-			target:'https://c.y.qq.com/mv/fcgi-bin/fcg_singer_mv.fcg',
+			target:'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
 			changeOrigin:true,
 			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://u.y.qq.com'
-				req.headers.host='u.y.qq.com'
+				req.headers.referer='https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html'
+				req.headers.host='y.qq.com'
 			},
 			pathRewrite:{
 				'^/api/getSingerDetail':''

@@ -22,18 +22,25 @@
 					</div>
 				</div>
 				<div class="bottom">
+					<div class="progress-wrapper">
+						<span class="time time-l">{{format(currentTime)}}</span>
+						<div class="progress-bar-wrapper">
+							<progress-bar></progress-bar>
+							<span class="time time-r">{{format(duration)}}</span>
+						</div>
+					</div>
 				  <div class="operators">
 					<div class="icon i-left" @click="changeMode">
 					  <i class="icon icon-sequence"></i>
 					</div>
-					<div class="icon i-left">
+					<div class="icon i-left" :class="disableCls">
 					  <i class="icon-prev" @click="prev"></i>
 					</div>
 					<div class="icon i-center">
 					  <i :class="playCls" @click="play"></i>
 					</div>
-					<div class="icon i-right">
-					  <i  class="icon-next"></i>
+					<div class="icon i-right" :class="disableCls">
+					  <i class="icon-next" @click="next"></i>
 					</div>
 					<div class="icon i-right">
 					  <i class="icon icon-not-favorite"></i>
@@ -59,7 +66,7 @@
 			</div>
 		  </div>
 		</transition >
-		<audio ref="audio" :src="currentSong.url"></audio>
+		<audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
 	</div>
 </template>
 
@@ -67,13 +74,16 @@
 	import {getSongLyric} from 'api/song'
 	import {RES_OK} from 'api/config'
 	import {mapGetters,mapMutations} from 'vuex'
+	import ProgressBar from 'components/base/progress-bar/progress-bar.vue'
 	
 	export default{
 		data(){
 			return{
 				songReady:false,
 				lyric:'',
-				musicid:''
+				musicid:'',
+				currentTime:'',
+				duration:''
 			}
 		},
 		mounted(){
@@ -84,7 +94,8 @@
 				'fullScreen',
 				'playlist',
 				'currentSong',
-				'playing'
+				'playing',
+				'currentIndex'
 			]),
 			playCls(){
 				return this.playing ? 'icon-pause' : 'icon-play'
@@ -94,6 +105,9 @@
 			},
 			miniPlayCls(){
 				return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+			},
+			disableCls(){
+				return this.songReady ? '' : 'disable'
 			}
 		},
 		activated(){
@@ -124,7 +138,49 @@
 			changeMode(){
 				
 			},
+			ready(){
+				this.songReady = true
+				this.duration = this.$refs.audio.duration
+			},
+			error(){
+				this.songReady = true
+			},
+			timeUpdate(e){
+				this.currentTime = e.target.currentTime
+			},
+			format(time){
+				time = time | 0
+				const minute = time / 60 | 0
+				const second = time % 60 
+				return `${minute}:${second}`
+			},
 			prev(){
+				if(!this.songReady){
+					return
+				}
+				let index  = this.currentIndex - 1
+				if(index === -1){
+					index = this.playList.length - 1
+				}
+				this.setCurrentIndex(index)
+				if(!this.playing){
+					this.play()
+				}
+				this.songReady = false
+			},
+			next(){
+				if(!this.songReady){
+					return
+				}
+				let  index  = this.currentIndex + 1
+				if(index  === this.playlist.length){
+					index  = 0
+				}
+				this.setCurrentIndex(index)
+				if(!this.playing){
+					this.play()
+				}
+				this.songReady = false
 			},
 			...mapMutations({
 				setFullScreen:'SET_FULL_SCREEN',
@@ -138,6 +194,9 @@
 					this.$refs.audio.play()
 				})
 			}
+		},
+		components:{
+			ProgressBar
 		}
 	}
 	

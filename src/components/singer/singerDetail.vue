@@ -1,5 +1,18 @@
 <template>
-	<div class="content">
+	<div>
+		<div class="info_box">
+			<div class="info_box__bd">
+				<div class="album">
+					<div class="album__media">
+						<img  class="album__cover" :src="singer_pic" />
+					</div>
+					<div class="album__bd">
+						<h1 class="album__name">{{singer_name}}</h1>
+						<p class="total">单曲 {{total}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
 		<scroll ref="scroll" class="scroll" :data="songs">
 			<song-list :data="songs"></song-list>
 		</scroll>
@@ -16,28 +29,35 @@
 	export default{
 		data(){
 			return{
-				singermid:'002J4UUk29y8BY',
+				singermid:'0025NhlN2yWrP4',
 				singer_pic:'',
 				singer_name:'',
+				total:'',
 				songs:[]
 			}
 		},
 		mounted(){
+			this.singermid = this.$route.query.singermid
+			this.singer_pic = this.$route.query.singer_pic
+		},
+		activated(){
+			this.singermid = this.$route.query.singermid
 			this._getSingerDetail()
 		},
 		methods:{
 			_getSingerDetail(){
-				let res =  getSingerDetail()
-				let list  = res.data || []
-				console.log(res)
-				let arr = []
-				if(list && list.length > 0){
-					for(var i = 0 ; i < list.length; i++){
-						console.log(list[i].id)
-						arr.push(new Song(list[i].id,list[i].name,list[i].album.title,list[i].singer[0].name,list[i].file.media_mid))
-					}
-				}
-				this.songs = arr || []
+				let res =  getSingerDetail(this.singermid).then((res)=>{
+					let list  = res.data.list || []
+					this.total = res.data.total || 0
+					this.singer_name = res.data.singer_name
+					let arr = []
+					list.forEach((v)=>{
+						arr.push(new Song(v.musicData.songid,v.musicData.songname,v.musicData.albumname,v.musicData.singer.name,v.musicData.strMediaMid))
+					})
+					this.songs = arr || []
+				}).catch((err)=>{
+					
+				})
 			}
 		},
 		components:{
@@ -55,5 +75,61 @@
 		position: fixed
 		width:100% 
 		height:100%
-		top: 88px
+		top: 150px
+	.info_box
+		position:absolute
+		top: 0
+		left: 0
+		z-index: 10
+		width: 100%
+		overflow: hidden
+		color: #fff
+		background: #fff
+		.info_box__bd
+			position: relative
+			z-index: 4
+			width: 100%
+			display: -webkit-box
+			-webkit-box-orient: vertical
+			overflow: hidden
+			background: rgba(0,0,0,.5)
+			.album
+				display: -webkit-box
+				-webkit-box-pack: center
+				-webkit-box-align: center
+				-webkit-box-sizing: border-box
+				width: 100%
+				padding: 20px 16px
+				overflow: hidden
+				.album__media
+					position: relative
+					width: 125px
+					margin-right: 10px
+					overflow: hidden
+					&:after
+						content: ""
+						display: block
+						padding-top: 100%
+					.album__cover
+						position: absolute
+						top: 0
+						left: 0
+						z-index: 2
+						width: 100%
+						height: 100%
+						object-fit: cover
+				.album__bd
+					position: relative
+					-webkit-box-flex: 1
+					.album__name
+						display: -webkit-box
+						-webkit-box-orient: vertical
+						-webkit-line-clamp: 2
+						max-height: 47px
+						line-height: 1.3
+						overflow: hidden
+						font-size: 18px
+					.total
+						font-size:13px
+						margin-top:20px
 </style>
