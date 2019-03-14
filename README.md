@@ -15,6 +15,6 @@ Vue + VueRouter + vuex + webpack + stylus
   
 ## 知识点
   1、抽象代码，自定义公用组件及做好组件复用  
-  2、使用transition
+  2、使用transition  
   3、webpack proxyTable的反向代理来实现跨域请求
 
