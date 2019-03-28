@@ -37,7 +37,7 @@ export default new Router({
 		{
 			path:'/singer_detail',
 			component:SingerDetail
-		},
+		}, 
 		{
 			path:'/song',
 			component:Song

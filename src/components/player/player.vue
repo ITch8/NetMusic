@@ -3,7 +3,7 @@
 		<transition  name="normal">
 			<div class="normal-player" v-show="fullScreen">
 				<div class="background">
-					<img :src="currentSong.image" width="100%" height="100%"/>
+					<img :src="tempImg" width="100%" height="100%"/>
 				</div>
 				<div class="top">
 					<div class="back">
@@ -16,7 +16,7 @@
 					<div class="middle-l">
 						<div class="cd-wrapper">
 							<div :class="cdCls">
-								<img class="image" :src="currentSong.image">
+								<img class="image" :src="tempImg">
 							</div>
 						</div>
 					</div>
@@ -25,13 +25,13 @@
 					<div class="progress-wrapper">
 						<span class="time time-l">{{format(currentTime)}}</span>
 						<div class="progress-bar-wrapper">
-							<progress-bar></progress-bar>
-							<span class="time time-r">{{format(duration)}}</span>
+							<progress-bar :pers="persent" @setPlayerPersent="setPlayerPersent"></progress-bar>
 						</div>
+						<span class="time time-r">{{format(duration)}}</span>
 					</div>
 				  <div class="operators">
 					<div class="icon i-left" @click="changeMode">
-					  <i class="icon icon-sequence"></i>
+					  <i class="icon" :class="modeCls"></i>
 					</div>
 					<div class="icon i-left" :class="disableCls">
 					  <i class="icon-prev" @click="prev"></i>
@@ -52,7 +52,7 @@
 		<transition name="mini">
 		  <div class="mini-player" v-show="!fullScreen" @click="convertToNormal">
 			<div class="icon" >
-			  <img :class="cdCls" width="40" height="40" :src="currentSong.image">
+			  <img :class="cdCls" width="40" height="40" :src="tempImg">
 			</div>
 			<div class="text">
 			  <h2 class="name" v-html="currentSong.name"></h2>
@@ -66,15 +66,17 @@
 			</div>
 		  </div>
 		</transition >
-		<audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
+		<audio ref="audio" :src="tempMusicUrl" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import {getSongLyric} from 'api/song'
 	import {RES_OK} from 'api/config'
 	import {mapGetters,mapMutations} from 'vuex'
 	import ProgressBar from 'components/base/progress-bar/progress-bar.vue'
+	import tempmusic from 'common/music/tempmusic.mp3'
+	import {playMode} from 'common/js/config'
 	
 	export default{
 		data(){
@@ -83,11 +85,15 @@
 				lyric:'',
 				musicid:'',
 				currentTime:'',
-				duration:''
+				duration:'',
+				tempMusicUrl: tempmusic ,//临时歌曲url
+				tempImg:'http://p.qpic.cn/music_cover/1Fr9IFMhWDPeUzWKVEjn3QTL2eX2QziaJmaL0ZAmsvtW71ic9IDUoYzg/300?n=1',
+				persent:0,
+				audioObj:null
 			}
 		},
 		mounted(){
-			console.log(this.currentSong.url)
+			this.audioObj =  this.$refs.audio
 		},
 		computed: {
 			...mapGetters([
@@ -95,7 +101,8 @@
 				'playlist',
 				'currentSong',
 				'playing',
-				'currentIndex'
+				'currentIndex',
+				'mode'
 			]),
 			playCls(){
 				return this.playing ? 'icon-pause' : 'icon-play'
@@ -108,6 +115,9 @@
 			},
 			disableCls(){
 				return this.songReady ? '' : 'disable'
+			},
+			modeCls(){
+				return this.mode === playMode.squence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
 			}
 		},
 		activated(){
@@ -130,23 +140,78 @@
 			play(){
 				this.setPlayingState(!this.playing)//控制播放状态
 				if(this.playing){
-					this.$refs.audio.play()
+					this.audioObj.play()
 				}else{
-					this.$refs.audio.pause()
+					this.audioObj.pause()
 				}
+				this.songReady = true
 			},
 			changeMode(){
-				
+				let mode = this.mode || 0
+				if(mode < 2){
+					mode += 1
+				}else{
+					mode = 0
+				}
+				this.setPlayMode(mode)
+			},
+			_setPlayIndex(type){//不同模式下设置播放列表的索引
+				if(!this.songReady){
+					return
+				}
+				let currentIndex  = this.currentIndex
+				let index = 0
+				if(this.mode == 0){
+					if('prev' == type){//前进一曲
+						if(currentIndex === 0){
+							index = this.playlist.length - 1
+						}else{
+							index = currentIndex - 1
+						}
+					}else{
+						if(currentIndex  === this.playlist.length -1){
+							index = 0
+						}else{
+							index = currentIndex + 1
+						}
+					}
+				}else if(this.mode == 1){
+					index = currentIndex
+				}else{
+					let len = this.playlist.length
+					index  = Math.floor(Math.random() * Math.floor(len))
+				}
+				this.setCurrentIndex(index)
+				if(!this.playing){
+					this.play()
+				}
+				this.songReady = false
+			},
+			setPlayerPersent(persent){
+				const currentTime  = this.duration * persent
+				if('fastSeek' in this.audioObj){
+					this.audioObj.fastSeek(currentTime)
+				}else{
+					this.audioObj.currentTime = currentTime
+				}
+				this.setPlayingState(false)
+				this.play()
 			},
 			ready(){
 				this.songReady = true
-				this.duration = this.$refs.audio.duration
+				this.duration = this.audioObj.duration
 			},
 			error(){
 				this.songReady = true
 			},
 			timeUpdate(e){
 				this.currentTime = e.target.currentTime
+				this.persent = Number(this.currentTime / this.duration || 0)
+				console.log(`this.persent====${this.persent}`)
+				if(1 == this.persent){//当前曲目播放完了
+					this.setPlayingState(false)
+					this._setPlayIndex('next')//接着播放
+				}
 			},
 			format(time){
 				time = time | 0
@@ -155,43 +220,22 @@
 				return `${minute}:${second}`
 			},
 			prev(){
-				if(!this.songReady){
-					return
-				}
-				let index  = this.currentIndex - 1
-				if(index === -1){
-					index = this.playList.length - 1
-				}
-				this.setCurrentIndex(index)
-				if(!this.playing){
-					this.play()
-				}
-				this.songReady = false
+				this._setPlayIndex('prev')
 			},
 			next(){
-				if(!this.songReady){
-					return
-				}
-				let  index  = this.currentIndex + 1
-				if(index  === this.playlist.length){
-					index  = 0
-				}
-				this.setCurrentIndex(index)
-				if(!this.playing){
-					this.play()
-				}
-				this.songReady = false
+				this._setPlayIndex('next')
 			},
 			...mapMutations({
 				setFullScreen:'SET_FULL_SCREEN',
 				setPlayingState:'SET_PLAYING_STATE',
-				setCurrentIndex:'SET_CURRENT_INDEX'
+				setCurrentIndex:'SET_CURRENT_INDEX',
+				setPlayMode:'SET_PLAY_MODE'
 			})
 		},
 		watch:{
 			currentSong(){
 				this.$nextTick(()=>{
-					this.$refs.audio.play()
+					this.audioObj.play()
 				})
 			}
 		},
