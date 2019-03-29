@@ -1,7 +1,7 @@
 <template>
 	<div class="s_singers">
 		<scroll ref="scroll" class="scroll" :data="singers">
-			<ul>
+			<ul ref="list">
 				<li class="s_singers_item" v-for="(item,index) in singers" :key="index" @click="detail(item)">
 					<div class="s_main">
 						<a href="javascript:;" class="s_pic">
@@ -17,12 +17,13 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import {getSingerList} from 'api/singer.js'
 	import {RES_OK} from 'api/config.js'
 	import Scroll from 'components/base/scroll/scroll'
 	import Vue from 'vue'
 	import VueLazyload  from 'vue-lazyload'
+	import {playListMixin} from 'common/js/mixin'
 	
 	Vue.use(VueLazyload,{
 		preLoad:1.3,
@@ -32,6 +33,7 @@
 	})
 	
 	export default{
+		mixins:[playListMixin],
 		data(){
 			return{
 				singers:[]
@@ -49,6 +51,10 @@
 			},
 			detail(item){
 				this.$router.push({path:'/singer_detail',query:{singermid:item.singer_mid,singer_pic:item.singer_pic}})
+			},
+			handlePlayList(playlist){//当底部播放器存在时 改变播放列表的padding_bottom
+				let padding_bottom  = playlist.length > 0 ? '70px' : ''
+				this.$refs.list.style.paddingBottom = padding_bottom
 			}
 		},
 		components:{

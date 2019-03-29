@@ -5,7 +5,7 @@
 				<span class="count_box__number">共{{data && data.length}}首</span>
 			</div>
 		</div>
-		<ul class="qui_list">
+		<ul class="qui_list"  ref="list">
 			<li class="js_play_song qui_list__item" v-for="(item,index) in data" :key="index" @click="_clickItem(item,index)">
 				<div class="qui_list__bd">
 					<div class="qui_list__box">
@@ -20,9 +20,10 @@
 
 <script>
 	import {mapActions} from 'vuex'
-	
+	import {playListMixin} from 'common/js/mixin'
 	export default {
 		name:'song-list',
+		mixins:[playListMixin],
 		props:{
 			data:{
 				type:Array,
@@ -36,13 +37,14 @@
 					index:index
 				})
 			},
+			handlePlayList(playlist){//当底部播放器存在时 改变播放列表的padding_bottom
+				let padding_bottom  = playlist.length > 0 ? '220px' : ''
+				this.$refs.list.style.paddingBottom = padding_bottom
+			},
 			...mapActions([
 				'selectPlay'
 			])
-		},
-		computed: {
-			
-		},
+		}
 	}
 </script>
 
@@ -61,6 +63,7 @@
 				margin-left:5px
 	.qui_list
 		overflow:hidden
+		padding-bottom: 150px;
 		.qui_list__item
 			position:relative
 			display:-webkit-box

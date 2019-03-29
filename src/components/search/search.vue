@@ -1,35 +1,38 @@
 <template>
 	<div>
-		<div class="mod_search_bar">
-			<div class="search_bar_cont">
-				<form class="search_form">
-					<input v-model="search" class="search_input" placeholder="搜索歌曲、歌单、专辑" />
-					<span class="icon icon_search">搜索</span>
-					<span v-show="isDelete" class="icon icon_delete">删除</span>
-				</form>
+		<scroll ref="scroll" class="scroll" :data="hotkey">
+			<div class="mod_search_bar">
+				<div class="search_bar_cont">
+					<form class="search_form">
+						<input v-model="search" class="search_input" placeholder="搜索歌曲、歌单、专辑" />
+						<span class="icon icon_search">搜索</span>
+						<span v-show="isDelete" class="icon icon_delete">删除</span>
+					</form>
+				</div>
+				<div v-show="isCancel" class="search_bar_tip_text">取消</div>
 			</div>
-			<div v-show="isCancel" class="search_bar_tip_text">取消</div>
-		</div>
-		<div class="mod_search_record" v-show="isClean">
-			<ul></ul>
-			<p class="record_handle">
-				<a href="javascript:;">清除搜索记录</a>
-			</p>
-		</div>
-		<div class="mod_search_result">
-			<h3 class="result_tit">热门搜索</h3>
-			<div class="result_tags">
-				<a href="" class="tag_s tag_hot">{{special_key}}</a>
-				<a href="" class="tag_s" v-for="(item,index) in hotkey" :key="index">{{item.k}}</a>
+			<div class="mod_search_record" v-show="isClean">
+				<ul></ul>
+				<p class="record_handle">
+					<a href="javascript:;">清除搜索记录</a>
+				</p>
 			</div>
-		</div>
+			<div class="mod_search_result">
+				<h3 class="result_tit">热门搜索</h3>
+				<div class="result_tags">
+					<a class="tag_s tag_hot">{{special_key}}</a>
+					<a class="tag_s" v-for="(item,index) in hotkey" :key="index">{{item.k}}</a>
+				</div>
+			</div>
+		</scroll>
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	
 	import {getHotkey} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
+	import Scroll from 'components/base/scroll/scroll'
 	
 	export default{
 		data(){
@@ -55,6 +58,9 @@
 					}
 				})
 			}
+		},
+		components:{
+			Scroll
 		}
 	}
 	
@@ -63,7 +69,11 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
-  
+  .scroll
+  	position: fixed
+  	width:100% 
+  	height:100%
+  	top: 88px
 	.mod_search_bar
 		background: #f4f4f4
 		padding: 10px

@@ -1,5 +1,5 @@
 <template>
-	<div class="recommend" ref="recommend">
+	<scroll class="recommend" ref="recommend" :data="songList">
 		<div class="recommend-content">
 			<div v-if="recommends.length" class="slider-wrapper">
 				<slider>
@@ -11,7 +11,7 @@
 				</slider>
 			</div>
 			<div class="recommend-list mod_twocol_list">
-				<h1 class="list-title">电台</h1>
+				<!-- <h1 class="list-title">电台</h1>
 				<ul class="list_container">
 					<li v-for="(item,index) in radioList" :key="index">
 						<div class="list_main">
@@ -24,9 +24,9 @@
 							</div>
 						</div>
 					</li>
-				</ul>
+				</ul> -->
 				<h1 class="list-title .mod_twocol_list">热门歌单</h1>
-				<ul class="list_container">
+				<ul class="list_container" ref="list">
 					<li v-for="(item,index) in songList" :key="index" @click="toRadio(item)">
 						<a class="list_main" href="javascript:">
 							<div class="list_media">
@@ -45,16 +45,18 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</scroll>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import Slider from 'components/base/slider/slider'
 	import Scroll from 'components/base/scroll/scroll'
 	import {getRecommend} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
+	import {playListMixin} from 'common/js/mixin'
 	
 	export default {
+		mixins:[playListMixin],
 		data(){
 			return {
 				recommends:[],
@@ -71,7 +73,7 @@
 					if(res.code  == RES_OK){
 						console.log(JSON.stringify(res.data));
 						this.recommends = res.data.slider
-						this.radioList = res.data.radioList
+						// this.radioList = res.data.radioList
 						this.songList = res.data.songList
 					}else{
 					}
@@ -80,8 +82,11 @@
 			},
 			toRadio(item){
 				let id  = item.id
-				console.log(id)
 				this.$router.push({path:'/radio',query:{disstid:item.id}})
+			},
+			handlePlayList(playlist){//当底部播放器存在时 改变播放列表的padding_bottom
+				let padding_bottom  = playlist.length > 0 ? '60px' : ''
+				this.$refs.list.style.paddingBottom = padding_bottom
 			}
 		},
 		components:{

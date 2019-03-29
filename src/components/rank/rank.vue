@@ -2,12 +2,12 @@
 	<div>
 		<scroll ref="scroll" class="scroll" :data="topList">
 			<div class="mod_topic">
-				<ul>
+				<ul ref="list">
 					<li class="topic_item" v-for="(item,index) in topList" :key="index">
 						<div class="topic_main">
 							<a class="topic_media">
 								<img :src="item.picUrl" />
-								<span class="listen_count"><i class="icon icon_listen"></i> {{item.listenCount | favirate}}ä¸‡</span>
+								<span class="listen_count"><i class="icon icon_listen"></i> {{item.listenCount | favirate}}W</span>
 							</a>
 							<div class="topic_info">
 								<div class="topic_cont">
@@ -32,8 +32,10 @@
 	import {getTopList} from 'api/commonApi.js'
 	import Scroll from 'components/base/scroll/scroll'
 	import {RES_OK} from 'api/config.js'
+	import {playListMixin} from 'common/js/mixin'
 	
 	export default{
+		mixins:[playListMixin],
 		data(){
 			return {
 				topList:[]
@@ -51,6 +53,10 @@
 					}
 				}).catch((e)=>{
 				})
+			},
+			handlePlayList(playlist){//µ±µ×²¿²¥·ÅÆ÷´æÔÚÊ± ¸Ä±ä²¥·ÅÁÐ±íµÄpadding_bottom
+				let padding_bottom  = playlist.length > 0 ? '70px' : ''
+				this.$refs.list.style.paddingBottom = padding_bottom
 			}
 		},
 		filters:{
