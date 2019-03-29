@@ -25,7 +25,7 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import SongList from 'components/base/song-list/song-list'
 	import Scroll from 'components/base/scroll/scroll'
 	import {getRadioDetail} from 'api/song'
@@ -58,7 +58,7 @@
 					this.album__desc = cdDetail.visitnum
 					this.author__avatar = cdDetail.headurl
 					songList.forEach(v=>{
-						songTemp.push(new Song(v.songid,v.songname,v.albumname,v.singer[0].name,v.strMediaMid))
+						songTemp.push(new Song(v.songid,v.songname,v.albumname,v.singer[0].name,v.singer[0].mid,v.strMediaMid))
 					})
 					this.songs = songTemp
 				}).catch((err)=>{

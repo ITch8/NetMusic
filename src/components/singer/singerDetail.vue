@@ -19,7 +19,7 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import {getSingerDetail} from 'api/singer.js'
 	import Scroll from 'components/base/scroll/scroll'
 	import SongList from 'components/base/song-list/song-list'
@@ -42,6 +42,7 @@
 		},
 		activated(){
 			this.singermid = this.$route.query.singermid
+			this.singer_pic = this.$route.query.singer_pic
 			this._getSingerDetail()
 		},
 		methods:{
@@ -52,7 +53,7 @@
 					this.singer_name = res.data.singer_name
 					let arr = []
 					list.forEach((v)=>{
-						arr.push(new Song(v.musicData.songid,v.musicData.songname,v.musicData.albumname,v.musicData.singer.name,v.musicData.strMediaMid))
+						arr.push(new Song(v.musicData.songid,v.musicData.songname,v.musicData.albumname,v.musicData.singer[0].name,v.musicData.singer[0].mid,v.musicData.strMediaMid))
 					})
 					this.songs = arr || []
 				}).catch((err)=>{

@@ -3,7 +3,7 @@
 		<transition  name="normal">
 			<div class="normal-player" v-show="fullScreen">
 				<div class="background">
-					<img :src="tempImg" width="100%" height="100%"/>
+					<img :src="currentSong.singer_pic" width="100%" height="100%"/>
 				</div>
 				<div class="top">
 					<div class="back">
@@ -13,13 +13,23 @@
 					<h2 class="subtitle" v-html="currentSong.singer_name"></h2>
 				</div>
 				<div class="middle">
-					<div class="middle-l">
+					<div class="middle-l" v-show="!isShowLyric">
 						<div class="cd-wrapper">
 							<div :class="cdCls">
-								<img class="image" :src="tempImg">
+								<img class="image" :src="currentSong.singer_pic">
 							</div>
 						</div>
+						<div class="playing-lyric-wrapper">
+							<div class="playing-lyric">{{lyricPlaying}}</div>
+						</div>
 					</div>
+					<scroll class="middle-r" ref="lyricList" v-show="isShowLyric" :data="currentLyric && currentLyric.lines">
+						<div class="lyric-wrapper">
+							<div v-if="currentLyric.lines">
+								<p ref="lyricLine" class="text" :class="{'current': currentLyricLine === index}" v-for="(line,index) in currentLyric.lines" :key="index">{{line.txt}}</p>
+							</div>
+						</div>
+					</scroll>
 				</div>
 				<div class="bottom">
 					<div class="progress-wrapper">
@@ -42,8 +52,8 @@
 					<div class="icon i-right" :class="disableCls">
 					  <i class="icon-next" @click="next"></i>
 					</div>
-					<div class="icon i-right">
-					  <i class="icon icon-not-favorite"></i>
+					<div class="icon i-right"  @click="showLyric">
+					  <span class="lyric-label" :class="{'lyric-false':!isShowLyric}">词</span>
 					</div>
 				  </div>
 				</div>
@@ -52,7 +62,7 @@
 		<transition name="mini">
 		  <div class="mini-player" v-show="!fullScreen" @click="convertToNormal">
 			<div class="icon" >
-			  <img :class="cdCls" width="40" height="40" :src="tempImg">
+			  <img :class="cdCls" width="40" height="40" :src="currentSong.singer_pic">
 			</div>
 			<div class="text">
 			  <h2 class="name" v-html="currentSong.name"></h2>
@@ -66,30 +76,32 @@
 			</div>
 		  </div>
 		</transition >
-		<audio ref="audio" :src="tempMusicUrl" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
+		<audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
 	</div>
 </template>
 
 <script>
-	import {getSongLyric} from 'api/song'
 	import {RES_OK} from 'api/config'
 	import {mapGetters,mapMutations} from 'vuex'
 	import ProgressBar from 'components/base/progress-bar/progress-bar.vue'
-	import tempmusic from 'common/music/tempmusic.mp3'
 	import {playMode} from 'common/js/config'
+	import Lyric from 'lyric-parser'
+	import Scroll from 'components/base/scroll/scroll'
 	
 	export default{
 		data(){
 			return{
 				songReady:false,
 				lyric:'',
-				musicid:'',
 				currentTime:'',
 				duration:'',
-				tempMusicUrl: tempmusic ,//临时歌曲url
-				tempImg:'http://p.qpic.cn/music_cover/1Fr9IFMhWDPeUzWKVEjn3QTL2eX2QziaJmaL0ZAmsvtW71ic9IDUoYzg/300?n=1',
 				persent:0,
-				audioObj:null
+				audioObj:null,
+				lyricParser:null,
+				currentLyric:[],
+				currentLyricLine:0,
+				isShowLyric:false,
+				lyricPlaying:''
 			}
 		},
 		mounted(){
@@ -120,16 +132,25 @@
 				return this.mode === playMode.squence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
 			}
 		},
-		activated(){
-			this.musicid = this.$route.query.musicid
-		},
 		methods: {
 			_getSongLyric() {//获取歌曲歌词
-				getSongLyric(this.musicid).then((res)=>{
-					console.log(res.lyric)
-				}).catch((err)=>{
-					console.log(err)
+				this.currentSong.getLyric().then((lyric)=>{
+					this.currentLyric  = new Lyric(lyric,this.handleLyric)
+					if(this.playing){
+						this.currentLyric.play()
+					}
 				})
+			},
+			handleLyric({lineNum,txt}){
+				this.currentLyricLine = lineNum
+				this.lyricPlaying = txt //当前歌词
+				//歌词列表上划
+				if(lineNum > 5){
+					let elemtEl = this.$refs.lyricLine[lineNum - 5]
+					this.$refs.lyricList.scrollToElement(elemtEl,1000)
+				}else{
+					this.$refs.lyricList.scrollTo(0,0,1000)
+				}
 			},
 			convertToMini(){//转成mini播放器
 				this.setFullScreen(false)
@@ -146,7 +167,7 @@
 				}
 				this.songReady = true
 			},
-			changeMode(){
+			changeMode(){//变换播放模式
 				let mode = this.mode || 0
 				if(mode < 2){
 					mode += 1
@@ -189,10 +210,14 @@
 			},
 			setPlayerPersent(persent){
 				const currentTime  = this.duration * persent
-				if('fastSeek' in this.audioObj){
+				if('fastSeek' in this.audioObj){//设置播放进度
 					this.audioObj.fastSeek(currentTime)
 				}else{
 					this.audioObj.currentTime = currentTime
+				}
+				//设置歌词对应
+				if(this.currentLyric){
+					this.currentLyric.seek(currentTime * 1000)
 				}
 				this.setPlayingState(false)
 				this.play()
@@ -207,10 +232,12 @@
 			timeUpdate(e){
 				this.currentTime = e.target.currentTime
 				this.persent = Number(this.currentTime / this.duration || 0)
-				console.log(`this.persent====${this.persent}`)
 				if(1 == this.persent){//当前曲目播放完了
 					this.setPlayingState(false)
 					this._setPlayIndex('next')//接着播放
+					if(this.currentLyric){
+						this.currentLyric.seek(0)//歌词位置重置
+					}
 				}
 			},
 			format(time){
@@ -218,6 +245,9 @@
 				const minute = time / 60 | 0
 				const second = time % 60 
 				return `${minute}:${second}`
+			},
+			showLyric(){
+				this.isShowLyric = !this.isShowLyric
 			},
 			prev(){
 				this._setPlayIndex('prev')
@@ -233,14 +263,19 @@
 			})
 		},
 		watch:{
-			currentSong(){
+			currentSong(newSong,oldSong){
+				if(newSong.id === oldSong.id){
+					return
+				}
 				this.$nextTick(()=>{
 					this.audioObj.play()
+					this._getSongLyric()
 				})
 			}
 		},
 		components:{
-			ProgressBar
+			ProgressBar,
+			Scroll
 		}
 	}
 	
@@ -342,7 +377,7 @@
               height: 20px
               line-height: 20px
               font-size: $font-size-medium
-              color: $color-text-l
+              color: $color-theme
         .middle-r
           display: inline-block
           vertical-align: top
@@ -418,6 +453,10 @@
             text-align: left
           .icon-favorite
             color: $color-sub-theme
+          .lyric-label
+            font-size: 25px
+          .lyric-false
+            color: $color-theme-d
       &.normal-enter-active, &.normal-leave-active
         transition: all 0.4s
         .top, .bottom

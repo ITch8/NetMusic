@@ -18,7 +18,7 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import {mapActions} from 'vuex'
 	
 	export default {
@@ -30,12 +30,11 @@
 			}
 		},
 		methods:{
-			_clickItem(item,index){
+			_clickItem(item,index){//选中播放
 				this.selectPlay({
 					list:this.data,
 					index:index
 				})
-				//this.$router.push({path:'/player',query:{musicid:item.id}})
 			},
 			...mapActions([
 				'selectPlay'
