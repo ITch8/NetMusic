@@ -3,7 +3,7 @@
 		<scroll ref="scroll" class="scroll" :data="topList">
 			<div class="mod_topic">
 				<ul ref="list">
-					<li class="topic_item" v-for="(item,index) in topList" :key="index">
+					<li class="topic_item" v-for="(item,index) in topList" :key="index" @click="_toDetail(item)">
 						<div class="topic_main">
 							<a class="topic_media">
 								<img :src="item.picUrl" />
@@ -27,7 +27,7 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	
 	import {getTopList} from 'api/commonApi.js'
 	import Scroll from 'components/base/scroll/scroll'
@@ -48,11 +48,13 @@
 			_getTopList(){
 				getTopList().then((res)=>{
 					if(res.code  == RES_OK){
-						console.log(res.data.topList);
 						this.topList = res.data.topList
 					}
 				}).catch((e)=>{
 				})
+			},
+			_toDetail(item){
+				this.$router.push({path:'/rank_detail',query:{rank_id:item.id,rank_pic:item.picUrl,rank_title:item.topTitle}})
 			},
 			handlePlayList(playlist){//当底部播放器存在时 改变播放列表的padding_bottom
 				let padding_bottom  = playlist.length > 0 ? '70px' : ''

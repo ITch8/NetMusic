@@ -456,7 +456,7 @@
           .lyric-label
             font-size: 25px
           .lyric-false
-            color: $color-theme-d
+            color: $color-text
       &.normal-enter-active, &.normal-leave-active
         transition: all 0.4s
         .top, .bottom

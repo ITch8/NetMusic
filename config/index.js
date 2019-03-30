@@ -53,11 +53,22 @@ module.exports = {
 			pathRewrite:{
 				'^/api/getRadioDetail':''
 			}
+		},
+		'/api/getTopDetail':{
+			target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
+			changeOrigin:true,
+			bypass:function(req,res,proxyOptions){
+				req.headers.referer='https://y.qq.com/n/yqq/toplist/26.html'
+				req.headers.host='y.qq.com'
+			},
+			pathRewrite:{
+				'^/api/getTopDetail':''
+			}
 		}
 	},
 
     // Various Dev Server settings
-    host: '192.168.0.161', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
