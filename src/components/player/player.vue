@@ -76,7 +76,7 @@
 			</div>
 		  </div>
 		</transition >
-		<audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="timeUpdate"></audio>
+		<audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="timeUpdate"></audio>
 	</div>
 </template>
 
@@ -267,10 +267,16 @@
 				if(newSong.id === oldSong.id){
 					return
 				}
-				this.$nextTick(()=>{
+				if(this.currentLyric){
+					this.currentTime = 0
+					this.lyricPlaying = ''
+					this.currentLyricLine = 0
+				}
+				clearTimeout(this.timer)
+				this.timer = setTimeout(()=>{
 					this.audioObj.play()
 					this._getSongLyric()
-				})
+				},1000)
 			}
 		},
 		components:{
