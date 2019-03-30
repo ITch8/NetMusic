@@ -2,9 +2,10 @@
 
 # 模仿QQ音乐wap端 仅为学习
 
-# 技术栈
+## 技术栈
 
 Vue + VueRouter + vuex + webpack + stylus 
+
 
 
 
@@ -17,8 +18,62 @@ Vue + VueRouter + vuex + webpack + stylus
   1、抽象代码，自定义公用组件及做好组件复用  
   2、使用transition  
   3、webpack proxyTable的反向代理来实现跨域请求
+	4、使用混入 (mixins) 解决底部播放器出现时页面底部元素被遮盖问题
+		```
+		import {mapGetters} from 'vuex'
+		export const playListMixin = {
+			computed:{
+				...mapGetters([
+					'playlist'
+				])
+			},
+			mounted(){
+				this.handlePlayList(this.playlist)
+			},
+			activated(){
+				this.handlePlayList(this.playlist)
+			},
+			watch:{
+				playlist(newVal){
+					this.handlePlayList(newVal)
+				}
+			},
+			methods:{
+				handlePlayList(){
+					throw new Error('components must implement handlePlayList function')
+				}
+			}
+		}
+		```
 
+## 开发
+### views
+- 首页推荐
+- 歌手列表
+- 歌曲排行榜
+- 搜索页面
+- 歌手详情页
+- 电台详情页
+- 排行榜详情页
+- 播放器
+### 公用组件
+- Scroll
+- Slider(轮播图)
+- SongList(歌曲列表)
+- ProgressBar(进度条)
 
+###
+
+## 使用
+* 安装
++ npm install
+
+* 开发运行
++ npm run dev
+
+### 注意点
+* QQ音乐的数据接口会一直在变动，若是接口访问错误要重新去QQ音乐官网抓取
+* 
 
 ## 接下来TODO  
 
