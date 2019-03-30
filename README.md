@@ -1,7 +1,9 @@
-# Net Music
+
+# Net Music  
+https://github.com/ITch8/NetMusic
 
 # 模仿QQ音乐wap端 
-## 实践中来学习Vue技术栈开发
+### 实践中来学习Vue技术栈开发
 
 ## 效果图
 
@@ -39,8 +41,10 @@ Vue + VueRouter + vuex + webpack + stylus + VueLazyload
 
 ## 总结
 ### 知识点
-	1.抽象代码，自定义公用组件及做好组件复用  
-	2.vuex来管理播放器播放状态及播放内容  
+	
+
+ 1. 抽象代码，自定义公用组件及做好组件复用  
+ 2.  vuex来管理播放器播放状态及播放内容  
 ```
 const state = {
 	singer:{},
@@ -51,8 +55,8 @@ const state = {
 	mode:playMode.squence,
 	currentIndex:-1
 }
-```  
-	3.webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
+```
+3. webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
 ```
 //例如 获取歌手列表
 
@@ -92,8 +96,8 @@ export function getSingerList() {
 		})
 }
 
-```  
-	4.使用混入 (mixins) 解决底部播放器出现时页面底部元素被遮盖问题  	
+```
+4. 使用混入 (mixins) 解决底部播放器出现时页面底部元素被遮盖问题  	
 ```
 import {mapGetters} from 'vuex'
 export const playListMixin = {
@@ -118,15 +122,15 @@ methods:{
 		throw new Error('components must implement handlePlayList function')
 	}
 }
-```  
-	5.页面样式仿QQ音乐wap端，copy Style，更多注意力放在了功能开发上了  
-	6.歌词解析及播放是使用 lyric-parser  （去install lyric-parser即可，感谢其作者）
+```
+5. 页面样式仿QQ音乐wap端，copy Style，更多注意力放在了功能开发上了  
+6. 歌词解析及播放是使用 lyric-parser  （去install lyric-parser即可，感谢其作者）
 
 
 ### 问题记录
-	1、注意BetterScroll初始化时机。dom渲染完成之后，bscroll对父子容器高度进行计算  
-	2、activated 在keep-alive 组件激活时调用，来解决路由跳转新的组件，重新加载数据（而不是挂载在mounted上面)  
-	3、QQ音乐的数据接口会一直在变动，若是接口访问错误要重新去QQ音乐官网抓取
+1. 注意BetterScroll初始化时机。dom渲染完成之后，bscroll对父子容器高度进行计算  
+2. activated 在keep-alive 组件激活时调用，来解决路由跳转新的组件，重新加载数据（而不是挂载在mounted上面)  
+3. QQ音乐的数据接口会一直在变动，若是接口访问错误要重新去QQ音乐官网抓取
 
 ## 使用
 * 安装  
@@ -144,7 +148,7 @@ methods:{
 
 ## TODO
 
-   1.完善搜索页面功能    
-   2.添加播放列表管理页面  
-   3.优化
+   1. 完善搜索页面功能    
+   2. 添加播放列表管理页面  
+   3. 优化
 
