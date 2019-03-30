@@ -1,13 +1,15 @@
 # Net Music
 
-# 模仿QQ音乐wap端 仅为学习
+# 模仿QQ音乐wap端 
+## 实践中来学习Vue技术栈开发
 
-##效果图
+## 效果图
 
 [效果图](https://github.com/ITch8/NetMusic)  
-查看页面图 ![效果图]
 
 ## 开发
+### 模块化开发
+
 ### 技术栈
 
 Vue + VueRouter + vuex + webpack + stylus + VueLazyload
@@ -27,49 +29,92 @@ Vue + VueRouter + vuex + webpack + stylus + VueLazyload
 - Slider(轮播图)
 - SongList(歌曲列表)
 - ProgressBar(进度条)
+- player
 
 ## 总结
 ### 知识点
-  1、抽象代码，自定义公用组件及做好组件复用  
-  2、vuex来管理播放器播放状态及播放内容
-		```
-			const state = {
-				singer:{},
-				playing:false,
-				fullScreen:false,
-				playlist:[],
-				sequenceList:[],
-				mode:playMode.squence,
-				currentIndex:-1
-			}
-		```
-  3、webpack proxyTable的反向代理来实现跨域请求
-	4、使用混入 (mixins) 解决底部播放器出现时页面底部元素被遮盖问题  	
+  1.抽象代码，自定义公用组件及做好组件复用  
+  2.vuex来管理播放器播放状态及播放内容  
 ```
-		import {mapGetters} from 'vuex'
-		export const playListMixin = {
-			computed:{
-				...mapGetters([
-					'playlist'
-				])
-			},
-			mounted(){
-				this.handlePlayList(this.playlist)
-			},
-			activated(){
-				this.handlePlayList(this.playlist)
-			},
-			watch:{
-				playlist(newVal){
-					this.handlePlayList(newVal)
-				}
-			},
-			methods:{
-				handlePlayList(){
-					throw new Error('components must implement handlePlayList function')
-				}
-			}
+const state = {
+	singer:{},
+	playing:false,
+	fullScreen:false,
+	playlist:[],
+	sequenceList:[],
+	mode:playMode.squence,
+	currentIndex:-1
+}
+```  
+  3.webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
 ```
+//例如 获取歌手列表
+
+//代理配置
+'/api/getSingers':{
+		target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
+		changeOrigin: true,
+		bypass:function(req,res,proxyOptions){
+			req.headers.referer='https://u.y.qq.com'
+			req.headers.host='u.y.qq.com'
+		},
+		pathRewrite:{
+			'^/api/getSingers':''
+		}
+	}
+//请求
+export function getSingerList() {
+  const url = '/api/getSingers'
+	const pdata = {
+		g_tk: 5381,
+		loginUin: 0,
+		hostUin: 0,
+		format: 'json',
+		inCharset: 'utf8',
+		outCharset: 'utf-8',
+		notice: 0,
+		platform: 'yqq.json',
+		needNewCode: 0,
+		data:JSON.stringify({"comm":{"ct":24,"cv":0},"singerList":{"module":"Music.SingerListServer","method":"get_singer_list","param":{"area":-100,"sex":-100,"genre":-100,"index":-100,"sin":0,"cur_page":1}}})
+	}
+	return	axios.get(url,{
+			 params:pdata
+		}).then((res)=>{
+			return Promise.resolve(res.data)
+		}).catch((err)=>{
+				console.log(err);
+		})
+}
+
+```  
+	4.使用混入 (mixins) 解决底部播放器出现时页面底部元素被遮盖问题  	
+```
+import {mapGetters} from 'vuex'
+export const playListMixin = {
+computed:{
+	...mapGetters([
+		'playlist'
+	])
+},
+mounted(){
+	this.handlePlayList(this.playlist)
+},
+activated(){
+	this.handlePlayList(this.playlist)
+},
+watch:{
+	playlist(newVal){
+		this.handlePlayList(newVal)
+	}
+},
+methods:{
+	handlePlayList(){
+		throw new Error('components must implement handlePlayList function')
+	}
+}
+```  
+   5.页面样式仿QQ音乐wap端，copy Style，更多注意力放在了功能开发上了  
+	 6.歌词解析及播放是使用 lyric-parser  （去install lyric-parser即可，感谢其作者）
 
 
 ### 问题记录
