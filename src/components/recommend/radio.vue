@@ -106,7 +106,7 @@
 			display: -webkit-box
 			-webkit-box-orient: vertical
 			overflow: hidden
-			background: rgba(0,0,0,.5)
+			background: $color-background-info
 			.album
 				display: -webkit-box
 				-webkit-box-pack: center

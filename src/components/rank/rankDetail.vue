@@ -55,12 +55,10 @@
 					this.title_share = detail.titleShare
 					let list  = detail.song|| []
 					let arr = []
-					console.log(`list=====${JSON.stringify(list)}`)
 					list.forEach((v)=>{
-						arr.push(new Song(v.songId,v.title,v.title,v.singerName,v.singerMid,v.mid))
+						arr.push(new Song(v.songId,v.title,v.title,v.singerName,v.singerMid,'001Xh4pR2PwxIO'))
 					})
 					this.songs = arr || []
-					
 				}).catch((err)=>{
 					
 				})
@@ -98,7 +96,7 @@
 			display: -webkit-box
 			-webkit-box-orient: vertical
 			overflow: hidden
-			background: rgba(0,0,0,.5)
+			background: $color-background-info
 			.album
 				display: -webkit-box
 				-webkit-box-pack: center

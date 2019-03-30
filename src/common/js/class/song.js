@@ -1,4 +1,4 @@
-import {mediaBaseUrl,singerImageBaseUrl} from 'api/config.js'
+import {mediaBaseUrl,singerImageBaseUrl,songBaseUrl} from 'api/config.js'
 import {getSongLyric} from 'api/song'
 
 export default class Song{
@@ -9,7 +9,7 @@ export default class Song{
 		this.album_title = album_title
 		this.singer_name = singer_name
 		this.singer_pic =`${singerImageBaseUrl.baseUrl}${singer_mid}${singerImageBaseUrl.param}`//歌手头像url
-		this.url = `${mediaBaseUrl.baseUrl}${media_mid}${mediaBaseUrl.param}` //歌曲url
+		this.url = media_mid?`${mediaBaseUrl.baseUrl}${media_mid}${mediaBaseUrl.param}`:`${songBaseUrl.baseUrl}${id}${songBaseUrl.param}` //歌曲url
 		this.image = require('common/image/person_default.png')
 	}
 	

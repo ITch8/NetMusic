@@ -18,3 +18,12 @@ Vue + VueRouter + vuex + webpack + stylus
   2、使用transition  
   3、webpack proxyTable的反向代理来实现跨域请求
 
+
+
+## 接下来TODO  
+
+   1.完善搜索页面功能    
+   2.补充抓取排行榜音乐列表的音乐mid接口  
+   3.完善首页电台的跳转  
+   4.优化
+

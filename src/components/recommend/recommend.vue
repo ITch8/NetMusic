@@ -11,7 +11,7 @@
 				</slider>
 			</div>
 			<div class="recommend-list mod_twocol_list">
-				<!-- <h1 class="list-title">电台</h1>
+				<h1 class="list-title">电台</h1>
 				<ul class="list_container">
 					<li v-for="(item,index) in radioList" :key="index">
 						<div class="list_main">
@@ -24,7 +24,7 @@
 							</div>
 						</div>
 					</li>
-				</ul> -->
+				</ul>
 				<h1 class="list-title .mod_twocol_list">热门歌单</h1>
 				<ul class="list_container" ref="list">
 					<li v-for="(item,index) in songList" :key="index" @click="toRadio(item)">
@@ -73,7 +73,7 @@
 					if(res.code  == RES_OK){
 						console.log(JSON.stringify(res.data));
 						this.recommends = res.data.slider
-						// this.radioList = res.data.radioList
+						this.radioList = res.data.radioList
 						this.songList = res.data.songList
 					}else{
 					}
