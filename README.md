@@ -5,7 +5,7 @@
 
 ## 效果图
 
-[效果图](https://github.com/ITch8/NetMusic)  
+[效果图](https://docs.qq.com/doc/DWnJoS0tRRndNVklY) 
 
 ## 开发
 ### 模块化开发
@@ -28,7 +28,7 @@ Vue + VueRouter + vuex + webpack + stylus + VueLazyload
 - 查看推荐歌单
 - 歌手排行
 - 播放歌曲列表（随机播放、单曲循环、顺序播放）
-- 
+- 歌曲排行榜
 
 ### 公用组件
 - Scroll
@@ -137,13 +137,14 @@ methods:{
 ```
 	npm run dev  
 ```
+* 打包  
 ```
 	npm run build
 ```
 
-## 接下来TODO  
+## TODO
 
    1.完善搜索页面功能    
-   2.添加播放列表管理页面 
+   2.添加播放列表管理页面  
    3.优化
 
