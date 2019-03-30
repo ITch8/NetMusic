@@ -71,7 +71,6 @@
 			_getRecommend(){
 				getRecommend().then((res)=>{
 					if(res.code  == RES_OK){
-						console.log(JSON.stringify(res.data));
 						this.recommends = res.data.slider
 						this.radioList = res.data.radioList
 						this.songList = res.data.songList

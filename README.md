@@ -22,7 +22,13 @@ Vue + VueRouter + vuex + webpack + stylus + VueLazyload
 - 歌手详情页
 - 电台详情页
 - 排行榜详情页
-- 播放器
+- 音乐播放器
+
+### 功能
+- 查看推荐歌单
+- 歌手排行
+- 播放歌曲列表（随机播放、单曲循环、顺序播放）
+- 
 
 ### 公用组件
 - Scroll
@@ -33,8 +39,8 @@ Vue + VueRouter + vuex + webpack + stylus + VueLazyload
 
 ## 总结
 ### 知识点
-  1.抽象代码，自定义公用组件及做好组件复用  
-  2.vuex来管理播放器播放状态及播放内容  
+	1.抽象代码，自定义公用组件及做好组件复用  
+	2.vuex来管理播放器播放状态及播放内容  
 ```
 const state = {
 	singer:{},
@@ -46,7 +52,7 @@ const state = {
 	currentIndex:-1
 }
 ```  
-  3.webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
+	3.webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
 ```
 //例如 获取歌手列表
 
@@ -113,27 +119,31 @@ methods:{
 	}
 }
 ```  
-   5.页面样式仿QQ音乐wap端，copy Style，更多注意力放在了功能开发上了  
-	 6.歌词解析及播放是使用 lyric-parser  （去install lyric-parser即可，感谢其作者）
+	5.页面样式仿QQ音乐wap端，copy Style，更多注意力放在了功能开发上了  
+	6.歌词解析及播放是使用 lyric-parser  （去install lyric-parser即可，感谢其作者）
 
 
 ### 问题记录
-  1、注意BetterScroll初始化时机。dom渲染完成之后，bscroll对父子容器高度进行计算  
-  2、activated 在keep-alive 组件激活时调用，来解决路由跳转新的组件，重新加载数据（而不是挂载在mounted上面)  
+	1、注意BetterScroll初始化时机。dom渲染完成之后，bscroll对父子容器高度进行计算  
+	2、activated 在keep-alive 组件激活时调用，来解决路由跳转新的组件，重新加载数据（而不是挂载在mounted上面)  
 	3、QQ音乐的数据接口会一直在变动，若是接口访问错误要重新去QQ音乐官网抓取
 
 ## 使用
-* 安装
-+ npm install
-
-* 开发运行
-+ npm run dev
- 
+* 安装  
+```
+	npm install  
+```
+* 开发运行  
+```
+	npm run dev  
+```
+```
+	npm run build
+```
 
 ## 接下来TODO  
 
    1.完善搜索页面功能    
-   2.补充抓取排行榜音乐列表的音乐mid接口  
-   3.完善首页电台的跳转  
-   4.优化
+   2.添加播放列表管理页面 
+   3.优化
 
