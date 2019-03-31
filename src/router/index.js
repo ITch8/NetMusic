@@ -1,61 +1,54 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Recommend from 'components/recommend/recommend'
-import Rank from 'components/rank/rank'
-import RankDetail from 'components/rank/rankDetail'
-import Search from 'components/search/search'
-import Singer from 'components/singer/singer'
-import SingerDetail from 'components/singer/singerDetail'
-import Song from 'components/song/song'
-import Player from 'components/player/player'
-import Radio from 'components/recommend/radio'
-
 Vue.use(Router)
 
+function loadView(view){//路由懒加载
+	return () => import(/* webpackChunkName: "view-[request]" */ `components/${view}.vue`)
+}
+
 export default new Router({
-  routes: [
-    {
-      path: '/',
-			redirect:'/recommend'
-    },
-		{
-			path:'/recommend',
-			component:Recommend
+	routes: [{
+			path: '/',
+			redirect: '/recommend'
 		},
 		{
-			path:'/search',
-			component:Search
+			path: '/recommend',
+			component: loadView('recommend/recommend')
 		},
 		{
-			path:'/rank',
-			component:Rank,
+			path: '/search',
+			component: loadView('search/search')
 		},
 		{
-			path:'/rank_detail',
-			component:RankDetail
+			path: '/rank',
+			component: loadView('rank/rank'),
 		},
 		{
-			path:'/singer',
-			component:Singer
+			path: '/rank_detail',
+			component: loadView('rank/rankDetail'),
 		},
 		{
-			path:'/singer_detail',
-			component:SingerDetail
-		}, 
-		{
-			path:'/song',
-			component:Song
+			path: '/singer',
+			component: loadView('singer/singer'),
 		},
 		{
-			path:'/player',
-			name:'player',
-			component:Player
+			path: '/singer_detail',
+			component: loadView('singer/singerDetail'),
 		},
 		{
-			path:'/radio',
-			name:'radio',
-			component:Radio
+			path: '/song',
+			component: loadView('song/song'),
+		},
+		{
+			path: '/player',
+			name: 'player',
+			component: loadView('player/player'),
+		},
+		{
+			path: '/radio',
+			name: 'radio',
+			component: loadView('recommend/radio'),
 		}
-  ]
+	]
 })
