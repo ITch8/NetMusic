@@ -5,10 +5,6 @@ https://github.com/ITch8/NetMusic
 # 模仿QQ音乐wap端 
 ### 实践中来学习Vue技术栈开发
 
-## 效果图
-
-[效果图](https://docs.qq.com/doc/DWnJoS0tRRndNVklY) 
-
 ## 开发
 ### 模块化开发
 
