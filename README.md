@@ -1,12 +1,17 @@
 
 # Net Music  
+代码地址  
 https://github.com/ITch8/NetMusic
 
-# 模仿QQ音乐wap端 
+## 模仿QQ音乐wap端 
 ### 实践中来学习Vue技术栈开发
 
+### 页面
+
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/推荐.png" width="375" alt="推荐页面"/>
+
 ## 开发
-### 模块化开发
+#### 模块化开发
 
 ### 技术栈
 
