@@ -4,11 +4,18 @@
 https://github.com/ITch8/NetMusic
 
 ## 模仿QQ音乐wap端 
-### 实践中来学习Vue技术栈开发
+
+   目的是实践中来学习Vue技术栈开发
 
 ### 页面
 
-<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/推荐.png" width="375" alt="推荐页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/推荐.png" width="200" alt="推荐页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/排行榜.png" width="200" alt="排行榜页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/歌手歌单.png" width="200" alt="歌手歌单页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/排行榜歌单.png" width="200" alt="排行榜歌单页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/搜索.png" width="200" alt="搜索页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/播放器.png" width="200" alt="播放器页面"/>
+<img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/播放器歌词.png" width="200" alt="播放器歌词页面"/>
 
 ## 开发
 #### 模块化开发
