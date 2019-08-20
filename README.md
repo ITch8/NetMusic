@@ -6,6 +6,11 @@ https://github.com/ITch8/NetMusic
 ## 模仿QQ音乐wap端 
 
    目的是实践中来学习Vue技术栈开发
+  
+## 扫码体验  
+#### 注意QQ音乐官方个别数据接口时常变动，会影响个别页面数据无法实时正常获取
+
+  <img src="https://github.com/ITch8/cnodeApp/blob/master/net_img/netmusic.png" width="200"/>
 
 ### 页面
 
