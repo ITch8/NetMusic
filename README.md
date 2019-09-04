@@ -69,7 +69,7 @@ const state = {
 	currentIndex:-1
 }
 ```
-3. webpack proxyTable的反向代理来实现跨域请求，抓取QQ音乐官网数据  
+3. webpack中dev-server的proxy实现跨域请求，抓取QQ音乐官网数据  
 ```
 //例如 获取歌手列表
 
