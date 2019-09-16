@@ -4,71 +4,73 @@
 
 const path = require('path')
 
+//需要代理的接口
+const proxyTable = {
+  '/api/getSingers':{
+  	target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
+  	changeOrigin: true,
+  	bypass:function(req,res,proxyOptions){
+  		req.headers.referer='https://u.y.qq.com'
+  		req.headers.host='u.y.qq.com'
+  	},
+  	pathRewrite:{
+  		'^/api/getSingers':''
+  	}
+  },
+  '/api/getSingerDetail':{
+  	target:'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
+  	changeOrigin:true,
+  	bypass:function(req,res,proxyOptions){
+  		req.headers.referer='https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html'
+  		req.headers.host='y.qq.com'
+  	},
+  	pathRewrite:{
+  		'^/api/getSingerDetail':''
+  	}
+  },
+  '/api/getSongLyric':{
+  	target:'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_yqq.fcg',
+  	changeOrigin:true,
+  	bypass:function(req,res,proxyOptions){
+  		req.headers.referer='https://c.y.qq.com'
+  		req.headers.host='c.y.qq.com'
+  	},
+  	pathRewrite:{
+  		'^/api/getSongLyric':''
+  	}
+  },
+  '/api/getRadioDetail':{
+  	target:'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+  	changeOrigin:true,
+  	bypass:function(req,res,proxyOptions){
+  		req.headers.referer='https://y.qq.com/n/yqq/playlist/1144416825.html'
+  		req.headers.host='y.qq.com'
+  	},
+  	pathRewrite:{
+  		'^/api/getRadioDetail':''
+  	}
+  },
+  '/api/getTopDetail':{
+  	target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
+  	changeOrigin:true,
+  	bypass:function(req,res,proxyOptions){
+  		req.headers.referer='https://y.qq.com/n/yqq/toplist/26.html'
+  		req.headers.host='y.qq.com'
+  	},
+  	pathRewrite:{
+  		'^/api/getTopDetail':''
+  	}
+  }
+}
+
 module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-		'/api/getSingers':{
-			target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
-			changeOrigin: true,
-			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://u.y.qq.com'
-				req.headers.host='u.y.qq.com'
-			},
-			pathRewrite:{
-				'^/api/getSingers':''
-			}
-		},
-		'/api/getSingerDetail':{
-			target:'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
-			changeOrigin:true,
-			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html'
-				req.headers.host='y.qq.com'
-			},
-			pathRewrite:{
-				'^/api/getSingerDetail':''
-			}
-		},
-		'/api/getSongLyric':{
-			target:'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_yqq.fcg',
-			changeOrigin:true,
-			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://c.y.qq.com'
-				req.headers.host='c.y.qq.com'
-			},
-			pathRewrite:{
-				'^/api/getSongLyric':''
-			}
-		},
-		'/api/getRadioDetail':{
-			target:'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
-			changeOrigin:true,
-			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://y.qq.com/n/yqq/playlist/1144416825.html'
-				req.headers.host='y.qq.com'
-			},
-			pathRewrite:{
-				'^/api/getRadioDetail':''
-			}
-		},
-		'/api/getTopDetail':{
-			target:'https://u.y.qq.com/cgi-bin/musicu.fcg',
-			changeOrigin:true,
-			bypass:function(req,res,proxyOptions){
-				req.headers.referer='https://y.qq.com/n/yqq/toplist/26.html'
-				req.headers.host='y.qq.com'
-			},
-			pathRewrite:{
-				'^/api/getTopDetail':''
-			}
-		}
-	},
-
+    proxyTable:proxyTable,
     // Various Dev Server settings
-    host: '192.168.0.161', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -105,7 +107,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

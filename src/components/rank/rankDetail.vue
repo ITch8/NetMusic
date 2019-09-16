@@ -26,7 +26,7 @@
 	import SongList from 'components/base/song-list/song-list'
 	import Song from 'common/js/class/song.js'
 	import {RES_OK} from 'api/config.js'
-	
+
 	export default{
 		data(){
 			return{
@@ -48,19 +48,18 @@
 		methods:{
 			_getTopDetail(){
 				let res =  getTopDetail(this.rank_id).then((res)=>{
-					console.log(`res=====${JSON.stringify(res)}`)
 					let detail = res.detail.data.data
 					this.rank_title = detail.title
 					this.update_time = detail.updateTime
 					this.title_share = detail.titleShare
-					let list  = detail.song|| []
+					let list  = res.detail.data.songInfoList|| [] //歌曲信息
 					let arr = []
 					list.forEach((v)=>{
-						arr.push(new Song(v.songId,v.title,v.title,v.singerName,v.singerMid,'001Xh4pR2PwxIO'))
+						arr.push(new Song(v.id,v.title,v.title,v.singer[0].name,v.singer[0].mid,v.mid))
 					})
 					this.songs = arr || []
 				}).catch((err)=>{
-					
+
 				})
 			}
 		},
@@ -69,15 +68,15 @@
 			SongList
 		}
 	}
-	
+
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	@import "~common/stylus/variable"
-	
+
 	.scroll
 		position: fixed
-		width:100% 
+		width:100%
 		height:100%
 		top: 150px
 	.info_box

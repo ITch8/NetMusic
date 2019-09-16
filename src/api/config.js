@@ -17,8 +17,8 @@ export const RES_OK = 0
 
 //音乐播放url主   C400003OUlho2HcRHC对应每个歌曲的file.media_mid
 export const mediaBaseUrl = {
-	baseUrl:'http://dl.stream.qqmusic.qq.com/C400',
-	param:'.m4a?guid=733535980&vkey=4ADD0E7689429F6496A78FE5FE21D6FCAC517F17AAD63831BC216708B863509AA0FA71460A3AEBB292F8CE6A6AA17B33FC2469A92759ABD3&uin=0&fromtag=38'
+	baseUrl:'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400',//http://dl.stream.qqmusic.qq.com/C400'
+	param:'.m4a?guid=8695206164&vkey=9A54ADE397F62F376C2F796CB663F63D591E6417D78F9C781D76E9447D2DE657131AA3CCFD02BB04643938E47B2F0B33F3388FF7DF803CD6&uin=0&fromtag=38'
 }
 //根据songId播放url
 export const songBaseUrl = {

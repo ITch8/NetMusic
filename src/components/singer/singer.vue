@@ -8,7 +8,7 @@
 							<img v-lazy="item.singer_pic" />
 						</a>
 						<div class="s_info">
-							{{item.singer_name}} ({{item.country}})
+							{{item.singer_name}} ({{item.country || '中国'}})
 						</div>
 					</div>
 				</li>
