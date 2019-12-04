@@ -54,7 +54,7 @@
 	import {getRecommend} from 'api/commonApi.js'
 	import {RES_OK} from 'api/config.js'
 	import {playListMixin} from 'common/js/mixin'
-	
+
 	export default {
 		mixins:[playListMixin],
 		data(){
@@ -69,15 +69,62 @@
 		},
 		methods:{
 			_getRecommend(){
-				getRecommend().then((res)=>{
-					if(res.code  == RES_OK){
-						this.recommends = res.data.slider
-						this.radioList = res.data.radioList
-						this.songList = res.data.songList
-					}else{
-					}
-				}).catch((e)=>{
-				})
+
+        this.recommends = [{
+          linkUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1876120.jpg?max_age=2592000',
+          picUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1876120.jpg?max_age=2592000'
+        },{
+          linkUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1882770.jpg?max_age=2592000',
+          picUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1882770.jpg?max_age=2592000'
+        },{
+          linkUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1879494.jpg?max_age=2592000',
+          picUrl:'//y.gtimg.cn/music/common/upload/MUSIC_FOCUS/1879494.jpg?max_age=2592000'
+        }]
+
+        this.radioList = [{
+          picUrl:'http://qpic.y.qq.com/music_cover/7vlTTvwBiaibKJpyXffTHicMjPm0HbKPEiawbiaFPnopFhXiadCM3H1KHKNw/300?n=1',
+          Ftitle:'松弛柔板'
+        },{
+          picUrl:'http://qpic.y.qq.com/music_cover/xiabfMZAmQ0PYUzgCvOicArFcotu2WyX9iaePFwhMpdWILldv1Iqo8obg/300?n=1',
+          Ftitle:'黑泡Made In China'
+        }]
+
+        this.songList = [{
+          id:7295832725,
+          picUrl:'//qpic.y.qq.com/music_cover/JBDCVgqXWXaYUvcsElqcicTJDBeiaibMe4Jzk3bWD3zEu7wruhyRJssUw/300?n=1',
+          accessnum:'865000',
+          songListDesc:'冬日暖歌 |  跨界给你37.5℃的治愈',
+          songListAuthor:''
+        },{
+          id:7317710657,
+          picUrl:'//qpic.y.qq.com/music_cover/HZnqT8B6sibc2iaxSb6biaOAZ5g1VZHcvAQasS2DicbmmFPGWHn8GI2q7Q/300?n=1',
+          accessnum:'352000',
+          songListDesc:'御寒华语 · 把暖阳装进耳朵',
+          songListAuthor:''
+        },{
+          id:7323809802,
+          picUrl:'//qpic.y.qq.com/music_cover/pE7OIUTsKQbxmMLMjYYJ3yGnp9qKoWxm2GicUzKNy5hKK7WOd3RJlcWLAGCtrPpvA/300?n=1',
+          accessnum:'79898',
+          songListDesc:'盘尼西林×落日飞车 联合演唱会歌单',
+          songListAuthor:''
+        },{
+          id:7279604689,
+          picUrl:'//qpic.y.qq.com/music_cover/Uj77DagTFgiccudSicYvppRhswq3YicbYpC0hOkhkqXas7PXoHd0hSTIw/300?n=1',
+          accessnum:'865000',
+          songListDesc:'爵士乐融合风格的嘻哈',
+          songListAuthor:''
+        }]
+
+
+				// getRecommend().then((res)=>{
+				// 	if(res.code  == RES_OK){
+				// 		this.recommends = res.data.slider
+				// 		this.radioList = res.data.radioList
+				// 		this.songList = res.data.songList
+				// 	}
+				// }).catch((e)=>{
+
+				// })
 			},
 			toRadio(item){
 				let id  = item.id
@@ -98,12 +145,12 @@
 			}
 		}
 	}
-	
+
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
-  
+
 .recommend
     position: fixed
     width: 100%
@@ -206,7 +253,7 @@
 						text-overflow:ellipsis
 						font-weight:400
 						font-size:12px
-							
+
 		.loading-container
 			position: absolute
 			width: 100%

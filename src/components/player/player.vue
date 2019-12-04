@@ -87,7 +87,7 @@
 	import {playMode} from 'common/js/config'
 	import Lyric from 'lyric-parser'
 	import Scroll from 'components/base/scroll/scroll'
-	
+
 	export default{
 		data(){
 			return{
@@ -101,7 +101,8 @@
 				currentLyric:[],
 				currentLyricLine:0,
 				isShowLyric:false,
-				lyricPlaying:''
+				lyricPlaying:'',
+        defaultSong:'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400001qvvgF38HVc4.m4a?guid=733535980&vkey=E41969A4B2EB9740E46DE33523CA80DAD7FFDE13146A83AA9B67FD9DCCCEEA0E4DD62D0D0CF467B50574361BB4A12393656778AEDB82D6C6&uin=7289&fromtag=66'
 			}
 		},
 		mounted(){
@@ -228,6 +229,8 @@
 			},
 			error(){
 				this.songReady = true
+        this.setPlayingState(false)
+        alert('哎呀，QQ官方把音乐挪地方了，~~~~《说好不哭》')
 			},
 			timeUpdate(e){
 				this.currentTime = e.target.currentTime
@@ -243,7 +246,7 @@
 			format(time){
 				time = time | 0
 				const minute = time / 60 | 0
-				const second = time % 60 
+				const second = time % 60
 				return `${minute}:${second}`
 			},
 			showLyric(){
@@ -284,7 +287,7 @@
 			Scroll
 		}
 	}
-	
+
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
@@ -299,7 +302,7 @@
       top: 0
       bottom: 0
       z-index: 150
-      background: $color-player-background 
+      background: $color-player-background
       .background
         position: absolute
         left: 0
